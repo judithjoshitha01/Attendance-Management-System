@@ -52,7 +52,7 @@ function App() {
         />
         <Route
           path="/EOD"
-          element={<EOD/>}
+          element={<eod/>}
         />
 
       </Routes>
