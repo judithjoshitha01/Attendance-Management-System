@@ -5,6 +5,7 @@ import ForgotPassword from "./pages/ForgotPassword";
 import Dashboard from "./pages/Dashboard";
 import AdminDashboard from "./pages/AdminDashboard";
 import Profile from "./pages/Profile";
+import EOD from "./pages/EOD";
 function App() {
   return (
     <BrowserRouter>
@@ -48,6 +49,10 @@ function App() {
         <Route
           path="/profile"
           element={<Profile />}
+        />
+        <Route
+          path="/EOD"
+          element={<EOD/>}
         />
 
       </Routes>
