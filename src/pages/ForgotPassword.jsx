@@ -4,6 +4,7 @@ import { ArrowLeft, Mail, ShieldCheck } from "lucide-react";
 
 function ForgotPassword() {
   const navigate = useNavigate();
+
   const [email, setEmail] = useState("");
   const [sent, setSent] = useState(false);
 
@@ -16,33 +17,51 @@ function ForgotPassword() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 flex items-center justify-center p-6">
+    <div className="flex min-h-screen items-center justify-center bg-slate-950 px-4 py-6 sm:px-6 sm:py-8">
 
       <div className="w-full max-w-md">
 
-        {/* Back */}
+        {/* ============================= */}
+        {/* BACK */}
+        {/* ============================= */}
+
         <button
           type="button"
           onClick={() => navigate("/")}
-          className="mb-6 flex items-center gap-2 text-sm text-slate-400 transition hover:text-white"
+          className="mb-5 flex items-center gap-2 text-sm text-slate-400 transition hover:text-white sm:mb-6"
         >
           <ArrowLeft size={17} />
           Back to login
         </button>
 
-        {/* Card */}
-        <div className="rounded-3xl border border-white/10 bg-slate-900 p-8 shadow-2xl sm:p-10">
+        {/* ============================= */}
+        {/* CARD */}
+        {/* ============================= */}
 
-          {/* Icon */}
-          <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-sky-500/10">
-            <Mail size={26} className="text-sky-400" />
+        <div className="rounded-2xl border border-white/10 bg-slate-900 p-5 shadow-2xl sm:rounded-3xl sm:p-8 lg:p-10">
+
+          {/* ============================= */}
+          {/* ICON */}
+          {/* ============================= */}
+
+          <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-xl bg-sky-500/10 sm:mb-6 sm:h-14 sm:w-14 sm:rounded-2xl">
+
+            <Mail
+              size={24}
+              className="text-sky-400 sm:h-[26px] sm:w-[26px]"
+            />
+
           </div>
 
           {!sent ? (
             <>
-              {/* Heading */}
-              <div className="mb-7">
-                <h1 className="text-3xl font-bold text-white">
+              {/* ============================= */}
+              {/* HEADING */}
+              {/* ============================= */}
+
+              <div className="mb-6 sm:mb-7">
+
+                <h1 className="text-2xl font-bold text-white sm:text-3xl">
                   Forgot password?
                 </h1>
 
@@ -50,9 +69,13 @@ function ForgotPassword() {
                   No worries. Enter your registered email address and
                   we'll help you reset your password.
                 </p>
+
               </div>
 
-              {/* Form */}
+              {/* ============================= */}
+              {/* FORM */}
+              {/* ============================= */}
+
               <form onSubmit={handleSubmit}>
 
                 <label className="mb-2 block text-sm font-medium text-slate-300">
@@ -87,19 +110,24 @@ function ForgotPassword() {
             </>
           ) : (
             <>
-              {/* Success */}
-              <div className="mb-7">
-                <h1 className="text-3xl font-bold text-white">
+              {/* ============================= */}
+              {/* SUCCESS */}
+              {/* ============================= */}
+
+              <div className="mb-6 sm:mb-7">
+
+                <h1 className="text-2xl font-bold text-white sm:text-3xl">
                   Check your email
                 </h1>
 
-                <p className="mt-3 text-sm leading-6 text-slate-400">
+                <p className="mt-3 break-words text-sm leading-6 text-slate-400">
                   If an account exists for{" "}
                   <span className="font-medium text-sky-400">
                     {email}
                   </span>
                   , we've sent instructions to reset your password.
                 </p>
+
               </div>
 
               <button
@@ -112,14 +140,21 @@ function ForgotPassword() {
             </>
           )}
 
-          {/* Security */}
-          <div className="mt-7 flex items-center justify-center gap-2 text-xs text-slate-500">
+          {/* ============================= */}
+          {/* SECURITY */}
+          {/* ============================= */}
+
+          <div className="mt-6 flex items-center justify-center gap-2 text-center text-xs text-slate-500 sm:mt-7">
+
             <ShieldCheck size={14} />
+
             Your account security matters
+
           </div>
 
         </div>
       </div>
+
     </div>
   );
 }
