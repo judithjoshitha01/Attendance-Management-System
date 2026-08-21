@@ -4,7 +4,7 @@ import Login from "./pages/Login";
 import ForgotPassword from "./pages/ForgotPassword";
 import Dashboard from "./pages/Dashboard";
 import AdminDashboard from "./pages/AdminDashboard";
-import Profile from "./pages/profile";
+import Profile from "./pages/Profile";
 function App() {
   return (
     <BrowserRouter>
