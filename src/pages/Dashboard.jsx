@@ -103,7 +103,7 @@ function Dashboard() {
 
       <nav className="relative z-20 border-b border-slate-200 bg-white">
 
-        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-8">
+        <div className="mx-auto flex h-16 w-full items-center justify-between px-5 sm:px-8 lg:px-12 xl:px-16">
 
           {/* LOGO */}
           <div className="flex items-center gap-3">
@@ -140,7 +140,7 @@ function Dashboard() {
 
               <UserCircle size={20} />
 
-              <span>Profile</span>
+              <span className="hidden sm:inline">Profile</span>
 
               <ChevronDown
                 size={16}
@@ -194,17 +194,17 @@ function Dashboard() {
       {/* MAIN CONTENT */}
       {/* ================================================= */}
 
-      <main className="relative z-10 mx-auto max-w-6xl px-8 py-12">
+      <main className="relative z-10 mx-auto w-full px-5 py-8 sm:px-8 sm:py-10 lg:px-12 lg:py-12 xl:px-16">
 
         {/* ================================================= */}
         {/* USER HEADER */}
         {/* ================================================= */}
 
-        <div className="mb-12 text-center">
+        <div className="mb-10 text-center sm:mb-12">
 
           <div className="flex items-center justify-center gap-2">
 
-            <h1 className="text-3xl font-semibold tracking-tight text-slate-900">
+            <h1 className="text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl">
               {userName}
             </h1>
 
@@ -234,7 +234,7 @@ function Dashboard() {
         {/* TIME SECTION */}
         {/* ================================================= */}
 
-        <div className="mx-auto flex max-w-3xl items-center justify-center">
+        <div className="mx-auto flex w-full max-w-4xl items-center justify-center">
 
           {/* TIME IN */}
           <div className="flex flex-1 flex-col items-center text-center">
@@ -252,14 +252,14 @@ function Dashboard() {
               Time In
             </p>
 
-            <p className="mt-2 text-3xl font-semibold tracking-tight text-slate-900">
+            <p className="mt-2 text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl">
               {formatTime(timeIn)}
             </p>
 
           </div>
 
           {/* DIVIDER */}
-          <div className="mx-8 h-16 w-px bg-slate-200" />
+          <div className="mx-4 h-16 w-px bg-slate-200 sm:mx-8" />
 
           {/* TIME OUT */}
           <div className="flex flex-1 flex-col items-center text-center">
@@ -277,7 +277,7 @@ function Dashboard() {
               Time Out
             </p>
 
-            <p className="mt-2 text-3xl font-semibold tracking-tight text-slate-900">
+            <p className="mt-2 text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl">
               {formatTime(timeOut)}
             </p>
 
@@ -305,14 +305,14 @@ function Dashboard() {
         {/* ATTENDANCE STATUS */}
         {/* ================================================= */}
 
-        <div className="mx-auto mt-12 max-w-4xl rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+        <div className="mx-auto mt-12 w-full max-w-5xl rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
 
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between gap-4">
 
             {/* LEFT */}
             <div className="flex items-center gap-4">
 
-              <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-emerald-50">
+              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-emerald-50">
 
                 <CheckCircle2
                   size={21}
@@ -336,7 +336,7 @@ function Dashboard() {
             </div>
 
             {/* STATUS */}
-            <div className="flex items-center gap-2 rounded-full bg-emerald-50 px-3 py-1.5 text-sm font-semibold text-emerald-600">
+            <div className="flex shrink-0 items-center gap-2 rounded-full bg-emerald-50 px-3 py-1.5 text-sm font-semibold text-emerald-600">
 
               <span className="h-2 w-2 rounded-full bg-emerald-500" />
 
@@ -352,14 +352,14 @@ function Dashboard() {
         {/* LEAVE TAKEN */}
         {/* ================================================= */}
 
-        <div className="mx-auto mt-5 max-w-4xl rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+        <div className="mx-auto mt-5 w-full max-w-5xl rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
 
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between gap-4">
 
             {/* LEFT */}
             <div className="flex items-center gap-4">
 
-              <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-sky-50">
+              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-sky-50">
 
                 <CalendarDays
                   size={21}
