@@ -55,18 +55,21 @@ function Login() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-100 p-6">
+    <div className="min-h-screen bg-slate-100 p-3 sm:p-6">
 
-      <div className="flex min-h-[calc(100vh-3rem)] items-center justify-center">
+      <div className="flex min-h-[calc(100vh-1.5rem)] items-center justify-center sm:min-h-[calc(100vh-3rem)]">
 
+        {/* ================================================= */}
         {/* MAIN CONTAINER */}
-        <div className="grid w-full max-w-5xl overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-2xl lg:grid-cols-[0.8fr_1.2fr]">
+        {/* ================================================= */}
+
+        <div className="grid w-full max-w-6xl overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-2xl lg:grid-cols-[0.9fr_1.1fr]">
 
           {/* ================================================= */}
           {/* LEFT SIDE */}
           {/* ================================================= */}
 
-          <div className="relative hidden min-h-[600px] items-center justify-center overflow-hidden bg-gradient-to-br from-slate-900 via-sky-800 to-sky-500 lg:flex">
+          <div className="relative hidden min-h-[620px] items-center justify-center overflow-hidden bg-gradient-to-br from-slate-900 via-sky-800 to-sky-500 lg:flex">
 
             {/* Background decoration */}
 
@@ -136,15 +139,17 @@ function Login() {
           {/* RIGHT SIDE */}
           {/* ================================================= */}
 
-          <div className="flex items-center justify-center bg-white px-8 py-10 sm:px-12">
+          <div className="flex items-center justify-center bg-white px-5 py-8 sm:px-10 sm:py-10 lg:px-12 xl:px-16">
 
             <div className="w-full max-w-md">
 
+              {/* ================================================= */}
               {/* HEADING */}
+              {/* ================================================= */}
 
               <div className="mb-7">
 
-                <h2 className="text-3xl font-bold tracking-tight text-slate-900">
+                <h2 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
                   Welcome back!
                 </h2>
 
@@ -160,7 +165,9 @@ function Login() {
 
               <form onSubmit={handleLogin} noValidate>
 
+                {/* ================================================= */}
                 {/* ROLE */}
+                {/* ================================================= */}
 
                 <div className="mb-6">
 
@@ -306,7 +313,7 @@ function Login() {
                 {/* REMEMBER + FORGOT */}
                 {/* ================================================= */}
 
-                <div className="mb-6 flex items-center justify-between">
+                <div className="mb-6 flex flex-col gap-3 xs:flex-row xs:items-center xs:justify-between sm:flex-row sm:items-center sm:justify-between">
 
                   <label className="flex items-center gap-2 text-sm text-slate-500">
 
@@ -322,7 +329,7 @@ function Login() {
                   <button
                     type="button"
                     onClick={() => navigate("/forgot-password")}
-                    className="text-sm font-medium text-sky-600 transition hover:text-sky-700"
+                    className="text-left text-sm font-medium text-sky-600 transition hover:text-sky-700 sm:text-right"
                   >
                     Forgot password?
                   </button>
@@ -359,7 +366,7 @@ function Login() {
               </div>
 
               {/* ================================================= */}
-              {/* GOOGLE - UI ONLY */}
+              {/* GOOGLE */}
               {/* ================================================= */}
 
               <button
