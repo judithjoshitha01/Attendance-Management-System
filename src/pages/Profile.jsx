@@ -37,7 +37,7 @@ function Profile() {
 
       <header className="sticky top-0 z-50 border-b border-slate-200 bg-white/90 backdrop-blur-xl">
 
-        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6 lg:px-8">
+        <div className="mx-auto flex h-16 w-full items-center justify-between px-5 sm:px-8 lg:px-12 xl:px-16">
 
           {/* BRAND */}
 
@@ -89,7 +89,7 @@ function Profile() {
       {/* MAIN */}
       {/* ============================= */}
 
-      <main className="mx-auto max-w-5xl px-6 py-8 lg:px-8">
+      <main className="mx-auto w-full px-5 py-7 sm:px-8 sm:py-9 lg:px-12 lg:py-10 xl:px-16">
 
         {/* BACK */}
 
@@ -106,7 +106,7 @@ function Profile() {
 
         <div className="mb-7">
 
-          <h2 className="text-3xl font-bold tracking-tight text-slate-900">
+          <h2 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
             My Profile
           </h2>
 
@@ -120,11 +120,11 @@ function Profile() {
         {/* PROFILE CARD */}
         {/* ============================= */}
 
-        <section className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+        <section className="w-full overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
 
           {/* TOP PROFILE AREA */}
 
-          <div className="border-b border-slate-100 bg-gradient-to-r from-sky-50 to-white px-6 py-7 sm:px-8">
+          <div className="border-b border-slate-100 bg-gradient-to-r from-sky-50 to-white px-5 py-6 sm:px-8 sm:py-7 lg:px-10">
 
             <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
 
@@ -132,19 +132,21 @@ function Profile() {
 
               <div className="flex items-center gap-4">
 
-                <div className="flex h-20 w-20 items-center justify-center rounded-2xl bg-sky-100 text-2xl font-bold text-sky-700 ring-4 ring-white shadow-sm">
+                <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-sky-100 text-xl font-bold text-sky-700 ring-4 ring-white shadow-sm sm:h-20 sm:w-20 sm:text-2xl">
                   J
                 </div>
 
-                <div>
+                <div className="min-w-0">
 
-                  <h3 className="text-xl font-bold text-slate-900">
+                  <h3 className="text-lg font-bold text-slate-900 sm:text-xl">
                     {user.name}
                   </h3>
 
                   <div className="mt-1 flex items-center gap-2 text-sm text-slate-500">
-                    <Mail size={15} />
-                    {user.email}
+                    <Mail size={15} className="shrink-0" />
+                    <span className="truncate">
+                      {user.email}
+                    </span>
                   </div>
 
                   <div className="mt-2 inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-600">
@@ -160,7 +162,7 @@ function Profile() {
 
               <button
                 type="button"
-                className="flex items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-slate-600 shadow-sm transition hover:border-sky-200 hover:bg-sky-50 hover:text-sky-600"
+                className="flex w-full items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-slate-600 shadow-sm transition hover:border-sky-200 hover:bg-sky-50 hover:text-sky-600 sm:w-auto"
               >
                 <Pencil size={16} />
                 Edit Profile
@@ -174,7 +176,7 @@ function Profile() {
           {/* DETAILS */}
           {/* ============================= */}
 
-          <div className="p-6 sm:p-8">
+          <div className="p-5 sm:p-8 lg:p-10">
 
             <div className="mb-5">
 
@@ -188,7 +190,7 @@ function Profile() {
 
             </div>
 
-            <div className="grid gap-4 sm:grid-cols-2">
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
 
               {/* EMPLOYEE ID */}
 
@@ -270,7 +272,7 @@ function Profile() {
           {/* ACCOUNT ACTIONS */}
           {/* ============================= */}
 
-          <div className="border-t border-slate-100 px-6 py-5 sm:px-8">
+          <div className="border-t border-slate-100 px-5 py-5 sm:px-8 lg:px-10">
 
             <button
               type="button"
