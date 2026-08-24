@@ -231,7 +231,7 @@ function Login() {
                         setEmailError("");
                       }}
                       placeholder="you@example.com"
-                      className={`w-full rounded-xl border bg-slate-50 py-2.5 pl-10 pr-4 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:bg-white focus:ring-2 focus:ring-sky-500/10 ${
+                      className={`w-full rounded-xl border bg-slate-50 py-1.5 pl-10 pr-4 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:bg-white focus:ring-2 focus:ring-sky-500/10 ${
                         emailError
                           ? "border-red-300 focus:border-red-400"
                           : "border-slate-200 focus:border-sky-500"
@@ -273,7 +273,7 @@ function Login() {
                         setPasswordError("");
                       }}
                       placeholder="Enter your password"
-                      className={`w-full rounded-xl border bg-slate-50 py-2.5 pl-10 pr-11 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:bg-white focus:ring-2 focus:ring-sky-500/10 ${
+                      className={`w-full rounded-xl border bg-slate-50 py-1.5 pl-10 pr-11 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:bg-white focus:ring-2 focus:ring-sky-500/10 ${
                         passwordError
                           ? "border-red-300 focus:border-red-400"
                           : "border-slate-200 focus:border-sky-500"
