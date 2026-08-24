@@ -11,7 +11,6 @@ import {
 function Login() {
   const navigate = useNavigate();
 
-  const [role, setRole] = useState("user");
   const [showPassword, setShowPassword] = useState(false);
 
   const [email, setEmail] = useState("");
@@ -19,10 +18,6 @@ function Login() {
 
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
-
-  // ==========================================
-  // SIGN IN
-  // ==========================================
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -46,42 +41,29 @@ function Login() {
       return;
     }
 
-    // Dummy login
-    if (role === "user") {
-      navigate("/dashboard");
-    } else {
-      navigate("/admin");
-    }
+    // Frontend only - dummy login
+    navigate("/dashboard");
   };
 
   return (
     <div className="min-h-screen bg-slate-100 p-3 sm:p-5">
       <div className="flex min-h-[calc(100vh-1.5rem)] items-center justify-center sm:min-h-[calc(100vh-2.5rem)]">
 
-        {/* ================================================= */}
         {/* MAIN CONTAINER */}
-        {/* ================================================= */}
-
         <div className="grid w-full max-w-6xl overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-2xl lg:grid-cols-[0.9fr_1.1fr]">
 
-          {/* ================================================= */}
           {/* LEFT SIDE */}
-          {/* ================================================= */}
-
           <div className="relative hidden min-h-[580px] items-center justify-center overflow-hidden bg-gradient-to-br from-slate-900 via-sky-800 to-sky-500 lg:flex">
 
-            {/* BACKGROUND DECORATION */}
-
+            {/* Background decoration */}
             <div className="absolute -right-20 -top-20 h-72 w-72 rounded-full bg-sky-400/15 blur-3xl" />
 
             <div className="absolute -bottom-20 -left-20 h-72 w-72 rounded-full bg-blue-400/10 blur-3xl" />
 
-            {/* CONTENT */}
-
+            {/* Content */}
             <div className="relative z-10 px-8 text-center">
 
-              {/* LOGO */}
-
+              {/* Logo */}
               <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl border border-white/15 bg-white/10 backdrop-blur-md">
                 <ShieldCheck
                   size={28}
@@ -89,8 +71,7 @@ function Login() {
                 />
               </div>
 
-              {/* BRAND */}
-
+              {/* Brand */}
               <h1 className="text-3xl font-bold text-white">
                 Attendrix✨
               </h1>
@@ -99,13 +80,11 @@ function Login() {
                 Smart attendance. Simple workflow.
               </p>
 
-              {/* FEATURES */}
-
+              {/* Features */}
               <div className="mx-auto mt-7 space-y-3.5 text-left">
 
                 <div className="flex items-center gap-3">
                   <div className="h-1.5 w-1.5 shrink-0 rounded-full bg-sky-300" />
-
                   <span className="text-sm text-white/80">
                     Track attendance effortlessly
                   </span>
@@ -113,7 +92,6 @@ function Login() {
 
                 <div className="flex items-center gap-3">
                   <div className="h-1.5 w-1.5 shrink-0 rounded-full bg-sky-300" />
-
                   <span className="text-sm text-white/80">
                     Manage work with ease
                   </span>
@@ -121,29 +99,21 @@ function Login() {
 
                 <div className="flex items-center gap-3">
                   <div className="h-1.5 w-1.5 shrink-0 rounded-full bg-sky-300" />
-
                   <span className="text-sm text-white/80">
                     Get accurate attendance insights
                   </span>
                 </div>
 
               </div>
-
             </div>
           </div>
 
-          {/* ================================================= */}
           {/* RIGHT SIDE */}
-          {/* ================================================= */}
-
           <div className="flex items-center justify-center bg-white px-5 py-7 sm:px-8 sm:py-8 lg:px-10 xl:px-14">
 
             <div className="w-full max-w-md">
 
-              {/* ================================================= */}
               {/* HEADING */}
-              {/* ================================================= */}
-
               <div className="mb-6">
 
                 <h2 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
@@ -156,60 +126,10 @@ function Login() {
 
               </div>
 
-              {/* ================================================= */}
               {/* FORM */}
-              {/* ================================================= */}
-
               <form onSubmit={handleLogin} noValidate>
 
-                {/* ================================================= */}
-                {/* ROLE */}
-                {/* ================================================= */}
-
-                <div className="mb-5">
-
-                  <p className="mb-2 text-sm font-medium text-slate-700">
-                    Login as
-                  </p>
-
-                  <div className="grid grid-cols-2 gap-2">
-
-                    {/* USER */}
-
-                    <button
-                      type="button"
-                      onClick={() => setRole("user")}
-                      className={`rounded-lg border px-3 py-1.5 text-xs font-medium transition ${
-                        role === "user"
-                          ? "border-sky-500 bg-sky-50 text-sky-600"
-                          : "border-slate-200 bg-slate-50 text-slate-500 hover:border-slate-300"
-                      }`}
-                    >
-                      User
-                    </button>
-
-                    {/* ADMIN */}
-
-                    <button
-                      type="button"
-                      onClick={() => setRole("admin")}
-                      className={`rounded-lg border px-3 py-1.5 text-xs font-medium transition ${
-                        role === "admin"
-                          ? "border-sky-500 bg-sky-50 text-sky-600"
-                          : "border-slate-200 bg-slate-50 text-slate-500 hover:border-slate-300"
-                      }`}
-                    >
-                      Admin
-                    </button>
-
-                  </div>
-
-                </div>
-
-                {/* ================================================= */}
                 {/* EMAIL */}
-                {/* ================================================= */}
-
                 <div className="mb-4.5">
 
                   <label className="mb-1.5 block text-sm font-medium text-slate-700">
@@ -248,10 +168,7 @@ function Login() {
 
                 </div>
 
-                {/* ================================================= */}
                 {/* PASSWORD */}
-                {/* ================================================= */}
-
                 <div className="mb-4.5">
 
                   <label className="mb-1.5 block text-sm font-medium text-slate-700">
@@ -281,7 +198,6 @@ function Login() {
                     />
 
                     {/* SHOW PASSWORD */}
-
                     <button
                       type="button"
                       onClick={() =>
@@ -306,10 +222,7 @@ function Login() {
 
                 </div>
 
-                {/* ================================================= */}
                 {/* REMEMBER + FORGOT */}
-                {/* ================================================= */}
-
                 <div className="mb-5 flex flex-col gap-2.5 sm:flex-row sm:items-center sm:justify-between">
 
                   <label className="flex items-center gap-2 text-sm text-slate-500">
@@ -333,56 +246,17 @@ function Login() {
 
                 </div>
 
-                {/* ================================================= */}
                 {/* SIGN IN */}
-                {/* ================================================= */}
-
                 <button
                   type="submit"
-                  className="w-full rounded-xl bg-gradient-to-r from-sky-500 to-blue-600 py-2.5  text-sm font-semibold text-white shadow-md shadow-sky-500/20 transition hover:-translate-y-0.5 hover:shadow-sky-500/30"
+                  className="w-full rounded-xl bg-gradient-to-r from-sky-500 to-blue-600 py-2.5 text-sm font-semibold text-white shadow-md shadow-sky-500/20 transition hover:-translate-y-0.5 hover:shadow-sky-500/30"
                 >
                   Sign in
                 </button>
 
               </form>
 
-              {/* ================================================= */}
-              {/* DIVIDER */}
-              {/* ================================================= */}
-
-              <div className="my-5 flex items-center gap-3">
-
-                <div className="h-px flex-1 bg-slate-200" />
-
-                <span className="text-xs font-medium text-slate-400">
-                  OR
-                </span>
-
-                <div className="h-px flex-1 bg-slate-200" />
-
-              </div>
-
-              {/* ================================================= */}
-              {/* GOOGLE */}
-              {/* ================================================= */}
-
-              <button
-                type="button"
-                className="flex w-full items-center justify-center gap-3 rounded-xl border border-slate-200 bg-white py-1.5 text-sm font-medium text-slate-700 transition hover:bg-slate-50 hover:shadow-sm"
-              >
-
-                <span className="flex h-5 w-5 items-center justify-center rounded-full bg-white text-sm font-bold text-blue-600">
-                  G
-                </span>
-
-                Continue with Google
-
-              </button>
-
-              {/* ================================================= */}
               {/* SECURITY */}
-              {/* ================================================= */}
-
               <div className="mt-5 flex items-center justify-center gap-2 text-xs text-slate-400">
 
                 <ShieldCheck size={14} />
