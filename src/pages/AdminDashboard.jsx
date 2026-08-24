@@ -457,7 +457,7 @@ function AdminDashboard() {
 
                 <button
                   onClick={() => setSelectedEod(eod)}
-                  className="flex w-full items-center justify-center gap-1.5 rounded-lg bg-sky-50 px-3 py-2 text-xs font-semibold text-sky-600 transition hover:bg-sky-100 sm:w-auto"
+                  className="flex w-full items-center justify-center gap-1.5 rounded-lg bg-sky-50 px-3 py-2 text-xs text-center font-semibold text-sky-600 transition hover:bg-sky-100 sm:w-auto"
                 >
                   <Eye size={14} />
                   View
