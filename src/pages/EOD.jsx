@@ -250,7 +250,7 @@ function EOD() {
             {/* SUBMIT */}
             <button
               type="submit"
-              className="w-full rounded-xl bg-sky-600 py-3.5 text-sm font-semibold text-white shadow-sm transition hover:bg-sky-700 hover:shadow-md"
+              className="w-full rounded-xl bg-sky-600 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-sky-700 hover:shadow-md"
             >
               Submit EOD
             </button>
