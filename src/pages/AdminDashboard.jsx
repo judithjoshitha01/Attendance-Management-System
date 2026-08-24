@@ -323,7 +323,7 @@ function AdminDashboard() {
                     Status
                   </th>
 
-                  <th className="p-4 text-right text-xs text-slate-400">
+                  <th className="p-4 text-center text-xs text-slate-400">
                     Export
                   </th>
                 </tr>
@@ -385,7 +385,7 @@ function AdminDashboard() {
 
                     </td>
 
-                    <td className="p-4 text-right">
+                    <td className="p-4 text-center">
 
                       <button
                         onClick={() =>
@@ -549,7 +549,7 @@ function AdminDashboard() {
 
             </div>
 
-            <div className="border-t p-4 text-right">
+            <div className="border-t p-4 text-center">
 
               <button
                 onClick={() => setSelectedEod(null)}
