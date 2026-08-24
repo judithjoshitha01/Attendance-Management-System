@@ -209,7 +209,7 @@ function AdminDashboard() {
                 "attendrix-attendance.csv"
               )
             }
-            className="flex w-full items-center justify-center gap-2 rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-slate-800 sm:w-auto"
+            className="flex w-full items-center justify-center gap-2 rounded-xl bg-slate-900 px-3 py-1.5 text-sm font-semibold text-white transition hover:bg-slate-800 sm:w-auto"
           >
             <Download size={16} />
             Export
@@ -280,7 +280,7 @@ function AdminDashboard() {
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
                   placeholder="Search..."
-                  className="w-full rounded-xl border border-slate-200 bg-slate-50 py-2 pl-9 pr-3 text-sm outline-none transition focus:border-sky-500"
+                  className="w-full rounded-xl border border-slate-200 bg-slate-50 py-1 pl-9 pr-3 text-sm outline-none transition focus:border-sky-500"
                 />
 
               </div>
@@ -288,7 +288,7 @@ function AdminDashboard() {
               <select
                 value={filter}
                 onChange={(e) => setFilter(e.target.value)}
-                className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm outline-none sm:w-auto"
+                className="w-full rounded-xl border border-slate-200 bg-slate-50 px-2 py-1 text-sm outline-none sm:w-auto"
               >
                 <option>All</option>
                 <option>Present</option>
