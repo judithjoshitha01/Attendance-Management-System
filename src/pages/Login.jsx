@@ -339,7 +339,7 @@ function Login() {
 
                 <button
                   type="submit"
-                  className="w-full rounded-xl bg-gradient-to-r from-sky-500 to-blue-600 py-2.5 text-sm font-semibold text-white shadow-md shadow-sky-500/20 transition hover:-translate-y-0.5 hover:shadow-sky-500/30"
+                  className="w-full rounded-xl bg-gradient-to-r from-sky-500 to-blue-600 py-2.5  text-sm font-semibold text-white shadow-md shadow-sky-500/20 transition hover:-translate-y-0.5 hover:shadow-sky-500/30"
                 >
                   Sign in
                 </button>
@@ -368,7 +368,7 @@ function Login() {
 
               <button
                 type="button"
-                className="flex w-full items-center justify-center gap-3 rounded-xl border border-slate-200 bg-white py-2.5 text-sm font-medium text-slate-700 transition hover:bg-slate-50 hover:shadow-sm"
+                className="flex w-full items-center justify-center gap-3 rounded-xl border border-slate-200 bg-white py-1.5 text-sm font-medium text-slate-700 transition hover:bg-slate-50 hover:shadow-sm"
               >
 
                 <span className="flex h-5 w-5 items-center justify-center rounded-full bg-white text-sm font-bold text-blue-600">
