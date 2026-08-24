@@ -172,14 +172,14 @@ function Login() {
                     Login as
                   </p>
 
-                  <div className="grid grid-cols-2 gap-2">
+                  <div className="flex gap-2">
 
                     {/* USER */}
 
                     <button
                       type="button"
                       onClick={() => setRole("user")}
-                      className={`rounded-lg border px-3 py-1.5 text-xs font-medium transition ${
+                      className={`w-20 rounded-lg border px-3 py-1.5 text-xs font-medium transition ${
                         role === "user"
                           ? "border-sky-500 bg-sky-50 text-sky-600"
                           : "border-slate-200 bg-slate-50 text-slate-500 hover:border-slate-300"
@@ -193,7 +193,7 @@ function Login() {
                     <button
                       type="button"
                       onClick={() => setRole("admin")}
-                      className={`rounded-lg border px-3 py-1.5 text-xs font-medium transition ${
+                      className={`w-20 rounded-lg border px-3 py-1.5 text-xs font-medium transition ${
                         role === "admin"
                           ? "border-sky-500 bg-sky-50 text-sky-600"
                           : "border-slate-200 bg-slate-50 text-slate-500 hover:border-slate-300"
