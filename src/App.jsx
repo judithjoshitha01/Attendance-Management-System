@@ -6,6 +6,8 @@ import Dashboard from "./pages/Dashboard";
 import AdminDashboard from "./pages/AdminDashboard";
 import Profile from "./pages/Profile";
 import EOD from "./pages/EOD";
+import Leave from "./pages/Leave";
+import AdminLeaves from "./pages/AdminLeaves";
 function App() {
   return (
     <BrowserRouter>
@@ -53,8 +55,11 @@ function App() {
         <Route
           path="/EOD"
           element={<EOD/>}
+          />
+        <Route path="/Leave" element={<Leave/>}
         />
-
+        <Route path="admin/leaves" element={<AdminLeaves/>}
+        />
       </Routes>
     </BrowserRouter>
   );

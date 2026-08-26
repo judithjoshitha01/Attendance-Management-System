@@ -1,273 +1,170 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  Eye,
-  EyeOff,
-  LockKeyhole,
-  Mail,
-  ShieldCheck,
-} from "lucide-react";
+import { Mail, Lock, ShieldCheck, CheckCircle2 } from "lucide-react";
 
 function Login() {
   const navigate = useNavigate();
 
-  const [showPassword, setShowPassword] = useState(false);
+  // ------------------------------------
+  // STATE MANAGEMENT
+  // ------------------------------------
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const [emailError, setEmailError] = useState("");
-  const [passwordError, setPasswordError] = useState("");
-
-  const handleLogin = (e) => {
+  // ------------------------------------
+  // HANDLE LOGIN SUBMISSION
+  // ------------------------------------
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
+    setLoading(true);
 
-    setEmailError("");
-    setPasswordError("");
-
-    let valid = true;
-
-    if (email.trim() === "") {
-      setEmailError("Email address is required.");
-      valid = false;
-    }
-
-    if (password.trim() === "") {
-      setPasswordError("Password is required.");
-      valid = false;
-    }
-
-    if (!valid) {
+    if (!email || !password) {
+      setError("Please fill in all fields.");
+      setLoading(false);
       return;
     }
 
-    // Frontend only - dummy login
-    navigate("/dashboard");
+    try {
+      // Connects to your running backend server on port 5000
+      const response = await fetch("http://localhost:5000/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        // Saves security token and name to LocalStorage
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("name", data.name || "User");
+        
+        // Successfully redirects user to dashboard route
+        navigate("/dashboard");
+      } else {
+        setError(data.message || "Invalid email or password.");
+      }
+    } catch (err) {
+      console.error("Login Error:", err);
+      setError("Cannot connect to server. Ensure backend is running!");
+    } finally {
+      setLoading(false);
+    }
   };
 
+  // ------------------------------------
+  // FRONTEND UI DESIGN (MATCHES THE BRAND)
+  // ------------------------------------
   return (
-    <div className="min-h-screen bg-slate-100 p-3 sm:p-5">
-      <div className="flex min-h-[calc(100vh-1.5rem)] items-center justify-center sm:min-h-[calc(100vh-2.5rem)]">
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4 font-sans antialiased">
+      <div className="max-w-4xl w-full bg-white rounded-3xl shadow-xl overflow-hidden grid grid-cols-1 md:grid-cols-2 border border-gray-100">
+        
+        {/* Left Branding Side Panel */}
+        <div className="bg-gradient-to-br from-blue-600 to-indigo-700 p-8 md:p-12 text-white flex flex-col justify-between relative overflow-hidden">
+          <div className="space-y-6 relative z-10">
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 rounded-lg bg-white/20 flex items-center justify-center font-bold text-lg backdrop-blur-sm">
+                A
+              </div>
+              <span className="text-xl font-bold tracking-tight">Attendrix</span>
+            </div>
+            
+            <div className="space-y-3 pt-8">
+              <h2 className="text-3xl font-extrabold leading-tight tracking-tight">
+                Smart attendance. Simple workflow.
+              </h2>
+              <p className="text-blue-100 text-sm max-w-sm">
+                Track attendance effortlessly, manage work reports with ease, and get accurate insights.
+              </p>
+            </div>
+          </div>
 
-        {/* MAIN CONTAINER */}
-        <div className="grid w-full max-w-6xl overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-2xl lg:grid-cols-[0.9fr_1.1fr]">
+          <div className="space-y-3 text-xs text-blue-200/80 pt-12 md:pt-0 relative z-10">
+            <div className="flex items-center gap-2">
+              <CheckCircle2 className="w-4 h-4 text-blue-300" />
+              <span>Track attendance effortlessly</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <CheckCircle2 className="w-4 h-4 text-blue-300" />
+              <span>Manage work with ease</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <CheckCircle2 className="w-4 h-4 text-blue-300" />
+              <span>Get accurate attendance insights</span>
+            </div>
+          </div>
 
-          {/* LEFT SIDE */}
-          <div className="relative hidden min-h-[580px] items-center justify-center overflow-hidden bg-gradient-to-br from-slate-900 via-sky-800 to-sky-500 lg:flex">
+          <div className="absolute right-0 bottom-0 opacity-10 translate-x-10 translate-y-10 pointer-events-none">
+            <ShieldCheck className="w-64 h-64" />
+          </div>
+        </div>
 
-            {/* Background decoration */}
-            <div className="absolute -right-20 -top-20 h-72 w-72 rounded-full bg-sky-400/15 blur-3xl" />
+        {/* Right Form Interaction Panel */}
+        <div className="p-8 md:p-12 flex flex-col justify-center">
+          <div className="space-y-2 mb-8">
+            <h3 className="text-2xl font-bold tracking-tight text-gray-900">Welcome back!</h3>
+            <p className="text-sm text-gray-500">Sign in to continue to your workspace</p>
+          </div>
 
-            <div className="absolute -bottom-20 -left-20 h-72 w-72 rounded-full bg-blue-400/10 blur-3xl" />
+          {error && (
+            <div className="bg-red-50 border border-red-200 text-red-700 rounded-xl p-3.5 text-sm font-medium mb-6 animate-shake">
+              {error}
+            </div>
+          )}
 
-            {/* Content */}
-            <div className="relative z-10 px-8 text-center">
-
-              {/* Logo */}
-              <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl border border-white/15 bg-white/10 backdrop-blur-md">
-                <ShieldCheck
-                  size={28}
-                  className="text-sky-300"
+          <form onSubmit={handleSubmit} className="space-y-5">
+            <div className="space-y-1.5">
+              <label className="text-xs font-semibold uppercase tracking-wider text-gray-500">
+                Email address
+              </label>
+              <div className="relative">
+                <Mail className="w-5 h-5 text-gray-400 absolute left-4 top-3.5" />
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="you@example.com"
+                  className="w-full bg-gray-50/50 hover:bg-gray-50 border border-gray-200 focus:border-blue-500 focus:bg-white rounded-xl pl-12 pr-4 py-3.5 text-sm outline-none transition duration-200"
                 />
               </div>
+            </div>
 
-              {/* Brand */}
-              <h1 className="text-3xl font-bold text-white">
-                Attendrix✨
-              </h1>
-
-              <p className="mt-2 text-sm text-white/70">
-                Smart attendance. Simple workflow.
-              </p>
-
-              {/* Features */}
-              <div className="mx-auto mt-7 space-y-3.5 text-left">
-
-                <div className="flex items-center gap-3">
-                  <div className="h-1.5 w-1.5 shrink-0 rounded-full bg-sky-300" />
-                  <span className="text-sm text-white/80">
-                    Track attendance effortlessly
-                  </span>
-                </div>
-
-                <div className="flex items-center gap-3">
-                  <div className="h-1.5 w-1.5 shrink-0 rounded-full bg-sky-300" />
-                  <span className="text-sm text-white/80">
-                    Manage work with ease
-                  </span>
-                </div>
-
-                <div className="flex items-center gap-3">
-                  <div className="h-1.5 w-1.5 shrink-0 rounded-full bg-sky-300" />
-                  <span className="text-sm text-white/80">
-                    Get accurate attendance insights
-                  </span>
-                </div>
-
+            <div className="space-y-1.5">
+              <div className="flex justify-between items-center">
+                <label className="text-xs font-semibold uppercase tracking-wider text-gray-500">
+                  Password
+                </label>
+                <a href="#forgot" className="text-xs font-medium text-blue-600 hover:underline">
+                  Forgot password?
+                </a>
+              </div>
+              <div className="relative">
+                <Lock className="w-5 h-5 text-gray-400 absolute left-4 top-3.5" />
+                <input
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="Enter your password"
+                  className="w-full bg-gray-50/50 hover:bg-gray-50 border border-gray-200 focus:border-blue-500 focus:bg-white rounded-xl pl-12 pr-4 py-3.5 text-sm outline-none transition duration-200"
+                />
               </div>
             </div>
-          </div>
 
-          {/* RIGHT SIDE */}
-          <div className="flex items-center justify-center bg-white px-5 py-7 sm:px-8 sm:py-8 lg:px-10 xl:px-14">
-
-            <div className="w-full max-w-md">
-
-              {/* HEADING */}
-              <div className="mb-6">
-
-                <h2 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
-                  Welcome back!
-                </h2>
-
-                <p className="mt-1.5 text-sm text-slate-500">
-                  Sign in to continue to your workspace.
-                </p>
-
-              </div>
-
-              {/* FORM */}
-              <form onSubmit={handleLogin} noValidate>
-
-                {/* EMAIL */}
-                <div className="mb-4.5">
-
-                  <label className="mb-1.5 block text-sm font-medium text-slate-700">
-                    Email address
-                  </label>
-
-                  <div className="relative">
-
-                    <Mail
-                      size={17}
-                      className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400"
-                    />
-
-                    <input
-                      type="email"
-                      value={email}
-                      onChange={(e) => {
-                        setEmail(e.target.value);
-                        setEmailError("");
-                      }}
-                      placeholder="you@example.com"
-                      className={`w-full rounded-xl border bg-slate-50 py-1.5 pl-10 pr-4 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:bg-white focus:ring-2 focus:ring-sky-500/10 ${
-                        emailError
-                          ? "border-red-300 focus:border-red-400"
-                          : "border-slate-200 focus:border-sky-500"
-                      }`}
-                    />
-
-                  </div>
-
-                  {emailError && (
-                    <p className="mt-1.5 text-xs text-red-500">
-                      {emailError}
-                    </p>
-                  )}
-
-                </div>
-
-                {/* PASSWORD */}
-                <div className="mb-4.5">
-
-                  <label className="mb-1.5 block text-sm font-medium text-slate-700">
-                    Password
-                  </label>
-
-                  <div className="relative">
-
-                    <LockKeyhole
-                      size={17}
-                      className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400"
-                    />
-
-                    <input
-                      type={showPassword ? "text" : "password"}
-                      value={password}
-                      onChange={(e) => {
-                        setPassword(e.target.value);
-                        setPasswordError("");
-                      }}
-                      placeholder="Enter your password"
-                      className={`w-full rounded-xl border bg-slate-50 py-1.5 pl-10 pr-11 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:bg-white focus:ring-2 focus:ring-sky-500/10 ${
-                        passwordError
-                          ? "border-red-300 focus:border-red-400"
-                          : "border-slate-200 focus:border-sky-500"
-                      }`}
-                    />
-
-                    {/* SHOW PASSWORD */}
-                    <button
-                      type="button"
-                      onClick={() =>
-                        setShowPassword((prev) => !prev)
-                      }
-                      className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 transition hover:text-slate-700"
-                    >
-                      {showPassword ? (
-                        <EyeOff size={17} />
-                      ) : (
-                        <Eye size={17} />
-                      )}
-                    </button>
-
-                  </div>
-
-                  {passwordError && (
-                    <p className="mt-1.5 text-xs text-red-500">
-                      {passwordError}
-                    </p>
-                  )}
-
-                </div>
-
-                {/* REMEMBER + FORGOT */}
-                <div className="mb-5 flex flex-col gap-2.5 sm:flex-row sm:items-center sm:justify-between">
-
-                  <label className="flex items-center gap-2 text-sm text-slate-500">
-
-                    <input
-                      type="checkbox"
-                      className="h-3.5 w-3.5 accent-sky-500"
-                    />
-
-                    Remember me
-
-                  </label>
-
-                  <button
-                    type="button"
-                    onClick={() => navigate("/forgot-password")}
-                    className="text-left text-sm font-medium text-sky-600 transition hover:text-sky-700 sm:text-right"
-                  >
-                    Forgot password?
-                  </button>
-
-                </div>
-
-                {/* SIGN IN */}
-                <button
-                  type="submit"
-                  className="w-full rounded-xl bg-gradient-to-r from-sky-500 to-blue-600 py-2.5 text-sm font-semibold text-white shadow-md shadow-sky-500/20 transition hover:-translate-y-0.5 hover:shadow-sky-500/30"
-                >
-                  Sign in
-                </button>
-
-              </form>
-
-              {/* SECURITY */}
-              <div className="mt-5 flex items-center justify-center gap-2 text-xs text-slate-400">
-
-                <ShieldCheck size={14} />
-
-                Secure workspace access
-
-              </div>
-
-            </div>
-          </div>
-
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl py-3.5 mt-4 transition duration-200 shadow-md active:scale-[0.99] disabled:bg-blue-400 disabled:cursor-not-allowed"
+            >
+              {loading ? "Signing in..." : "Sign In"}
+            </button>
+          </form>
         </div>
+
       </div>
     </div>
   );

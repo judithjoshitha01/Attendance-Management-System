@@ -1,5 +1,5 @@
-const dotenv = require('dotenv'); // 1. இதை ஃபர்ஸ்ட் லைனுக்கு கொண்டு வந்தாச்சு
-dotenv.config(); // 2. இதை செகண்ட் லைன்ல ரன் பண்றோம்
+const dotenv = require('dotenv'); 
+dotenv.config(); 
 
 const express = require('express');
 const cors = require('cors');
@@ -20,6 +20,9 @@ app.use(express.json());
 // Active Endpoints
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
+app.use('/api/attendance',require('./routes/attendanceRoutes'));
+app.use('/api/leave', require('./routes/leaveRoutes'));
+app.use('/api/eod', require('./routes/eodRoutes'));
 
 app.get('/', (req, res) => {
     res.send('Attendrix Backend Server Running Successfully!');

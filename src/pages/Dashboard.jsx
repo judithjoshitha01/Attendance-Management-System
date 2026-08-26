@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   ChevronDown,
@@ -13,377 +13,264 @@ import {
 function Dashboard() {
   const navigate = useNavigate();
 
+  // ------------------------------------
+  // STATE MANAGEMENT
+  // ------------------------------------
   const [showProfile, setShowProfile] = useState(false);
+  const [username, setUsername] = useState("User");
+  const [timeIn, setTimeIn] = useState("--:--");
+  const [timeout, setTimeOut] = useState("--:--");
+  const [leaveTaken, setLeaveTaken] = useState(0);
+  const [message, setMessage] = useState("");
 
-  // ==============================
-  // USER DATA
-  // ==============================
+  // ------------------------------------
+  // FETCH DASHBOARD DATA FROM BACKEND
+  // ------------------------------------
+  useEffect(() => {
+    const fetchDashboardData = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const storedName = localStorage.getItem("name") || "User";
+        setUsername(storedName);
 
-  const userName = localStorage.getItem("userName") || "Judi";
+        if (!token) {
+          navigate("/");
+          return;
+        }
 
-  // ==============================
-  // ATTENDANCE DATA
-  // ==============================
+        // 1. Fetch Today's Attendance Details
+        const attRes = await fetch("http://localhost:5000/api/attendance/my", {
+          method: "GET",
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        const attData = await attRes.json();
+        if (attRes.ok && attData.length > 0) {
+          const todayData = attData[attData.length - 1];
+          setTimeIn(todayData.timeIn || "--:--");
+          setTimeOut(todayData.timeOut || "--:--");
+        }
 
-  const timeIn = localStorage.getItem("timeIn");
-  const timeOut = localStorage.getItem("timeOut");
+        // 2. Fetch Applied Leaves Summary Count
+        const leaveRes = await fetch("http://localhost:5000/api/leave/my", {
+          method: "GET",
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        const leaveData = await leaveRes.json();
+        if (leaveRes.ok) {
+          setLeaveTaken(leaveData.length);
+        }
+      } catch (err) {
+        console.error("Error fetching dashboard data:", err);
+      }
+    };
 
-  // Dummy leave data
-  const leaveTaken = 3;
+    fetchDashboardData();
+  }, [navigate]);
 
-  // ==============================
-  // FORMAT TIME
-  // ==============================
-
-  const formatTime = (time) => {
-    if (!time) {
-      return "--:--";
+  // ------------------------------------
+  // BUTTON CLICK HANDLERS
+  // ------------------------------------
+  
+  // 1. Handle Time In Punch
+  const handleTimeIn = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch("http://localhost:5000/api/attendance/timein", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+      const data = await response.json();
+      if (response.ok) {
+        setTimeIn(data.timeIn);
+        setMessage("Time In recorded successfully!");
+      } else {
+        setMessage(data.message);
+      }
+    } catch (err) {
+      console.error(err);
+      setMessage("Server error occurred!");
     }
-
-    return new Date(time).toLocaleTimeString("en-US", {
-      hour: "2-digit",
-      minute: "2-digit",
-    });
   };
 
-  // ==============================
-  // CURRENT DATE
-  // ==============================
-
-  const getCurrentDate = () => {
-    return new Date().toLocaleDateString("en-US", {
-      weekday: "long",
-      day: "numeric",
-      month: "long",
-      year: "numeric",
-    });
+  // 2. Handle Time Out Punch
+  const handleTimeOut = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch("http://localhost:5000/api/attendance/timeout", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+      const data = await response.json();
+      if (response.ok) {
+        setTimeOut(data.timeOut);
+        setMessage("Time Out recorded successfully!");
+      } else {
+        setMessage(data.message);
+      }
+    } catch (err) {
+      console.error(err);
+      setMessage("Server error occurred!");
+    }
   };
 
-  // ==============================
-  // LOGOUT
-  // ==============================
-
+  // 3. Handle Logout Trigger
   const handleLogout = () => {
-    const logoutTime = new Date().toISOString();
-
-    localStorage.setItem("timeOut", logoutTime);
-
+    localStorage.clear();
     navigate("/");
   };
 
+  // ------------------------------------
+  // FRONTEND UI DESIGN (REACT COMPONENT)
+  // ------------------------------------
   return (
-    <div className="relative min-h-screen overflow-hidden bg-slate-50 text-slate-900">
-
-      {/* ================================================= */}
-      {/* SUBTLE GRID BACKGROUND */}
-      {/* ================================================= */}
-
-      <div
-        className="pointer-events-none absolute inset-0 opacity-[0.35]"
-        style={{
-          backgroundImage: `
-            linear-gradient(to right, #e2e8f0 1px, transparent 1px),
-            linear-gradient(to bottom, #e2e8f0 1px, transparent 1px)
-          `,
-          backgroundSize: "40px 40px",
-        }}
-      />
-
-      {/* ================================================= */}
-      {/* BACKGROUND DECORATION */}
-      {/* ================================================= */}
-
-      <div className="pointer-events-none absolute -right-40 -top-40 h-96 w-96 rounded-full bg-sky-100/60 blur-3xl" />
-
-      <div className="pointer-events-none absolute -bottom-40 -left-40 h-96 w-96 rounded-full bg-blue-50 blur-3xl" />
-
-      {/* ================================================= */}
-      {/* NAVBAR */}
-      {/* ================================================= */}
-
-      <nav className="relative z-20 border-b border-slate-200 bg-white">
-
-        <div className="mx-auto flex h-16 w-full items-center justify-between px-4 sm:px-6 lg:px-8 xl:px-12">
-
-          {/* LOGO */}
-          <div className="flex items-center gap-3">
-
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-sky-50">
-              <ShieldCheck
-                size={20}
-                className="text-sky-600"
-              />
-            </div>
-
-            <div>
-              <span className="text-lg font-bold tracking-tight text-slate-900 sm:text-xl">
-                Attendrix✨
-              </span>
-
-              <div className="h-0.5 w-7 rounded-full bg-sky-500" />
-            </div>
-
+    <div className="min-h-screen bg-gray-50 flex flex-col font-sans antialiased text-gray-800">
+      {/* Header Bar */}
+      <header className="bg-white border-b border-gray-200 sticky top-0 z-50 px-6 py-4 flex items-center justify-between shadow-sm">
+        <div className="flex items-center gap-2">
+          <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center text-white font-bold text-lg">
+            A
           </div>
-
-          {/* PROFILE */}
-          <div className="relative">
-
-            <button
-              type="button"
-              onClick={() => setShowProfile(!showProfile)}
-              className="flex items-center gap-2 rounded-lg px-3 py-1.5 text-sm font-medium text-slate-600 transition hover:bg-slate-100 hover:text-slate-900"
-            >
-              <UserCircle size={18} />
-
-              <span className="hidden sm:inline">
-                Profile
-              </span>
-
-              <ChevronDown
-                size={15}
-                className={`transition-transform ${
-                  showProfile ? "rotate-180" : ""
-                }`}
-              />
-            </button>
-
-            {/* PROFILE DROPDOWN */}
-            {showProfile && (
-              <div className="absolute right-0 top-11 z-30 w-44 rounded-xl border border-slate-200 bg-white p-1.5 shadow-lg">
-
-                <button
-                  type="button"
-                  onClick={() => navigate("/profile")}
-                  className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm text-slate-600 transition hover:bg-slate-100"
-                >
-                  <UserCircle size={16} />
-                  Profile
-                </button>
-
-                <div className="my-1 border-t border-slate-100" />
-
-                <button
-                  type="button"
-                  onClick={handleLogout}
-                  className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm text-red-500 transition hover:bg-red-50"
-                >
-                  <LogOut size={16} />
-                  Logout
-                </button>
-
-              </div>
-            )}
-
-          </div>
-
+          <span className="text-xl font-bold tracking-tight text-gray-900">
+            Attendrix <span className="text-blue-600 text-xs font-semibold px-1.5 py-0.5 rounded bg-blue-50 border border-blue-100 ml-1">v2.0</span>
+          </span>
         </div>
 
-      </nav>
-
-      {/* ================================================= */}
-      {/* MAIN CONTENT */}
-      {/* ================================================= */}
-
-      <main className="relative z-10 mx-auto w-full px-4 py-7 sm:px-6 sm:py-8 lg:px-8 lg:py-10 xl:px-12">
-
-        {/* ================================================= */}
-        {/* USER HEADER */}
-        {/* ================================================= */}
-
-        <div className="mb-8 text-center sm:mb-9">
-
-          <div className="flex items-center justify-center gap-2">
-
-            <h1 className="text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl">
-              {userName}
-            </h1>
-
-            {/* ACTIVE */}
-            <span className="flex items-center gap-1.5 rounded-full bg-emerald-50 px-2 py-0.5 text-xs font-medium text-emerald-600">
-              <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
-              Active
-            </span>
-
-          </div>
-
-          {/* DATE */}
-          <div className="mt-2.5 flex items-center justify-center gap-2 text-sm text-slate-500">
-
-            <CalendarDays size={14} />
-
-            {getCurrentDate()}
-
-          </div>
-
-        </div>
-
-        {/* ================================================= */}
-        {/* TIME SECTION */}
-        {/* ================================================= */}
-
-        <div className="mx-auto flex w-full max-w-3xl items-center justify-center">
-
-          {/* TIME IN */}
-          <div className="flex flex-1 flex-col items-center text-center">
-
-            <div className="mb-2.5 flex h-9 w-9 items-center justify-center rounded-xl bg-sky-50">
-              <Clock3
-                size={18}
-                className="text-sky-600"
-              />
-            </div>
-
-            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">
-              Time In
-            </p>
-
-            <p className="mt-1.5 text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl">
-              {formatTime(timeIn)}
-            </p>
-
-          </div>
-
-          {/* DIVIDER */}
-          <div className="mx-4 h-14 w-px bg-slate-200 sm:mx-8" />
-
-          {/* TIME OUT */}
-          <div className="flex flex-1 flex-col items-center text-center">
-
-            <div className="mb-2.5 flex h-9 w-9 items-center justify-center rounded-xl bg-slate-100">
-              <Clock3
-                size={18}
-                className="text-slate-500"
-              />
-            </div>
-
-            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">
-              Time Out
-            </p>
-
-            <p className="mt-1.5 text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl">
-              {formatTime(timeOut)}
-            </p>
-
-          </div>
-
-        </div>
-
-        {/* ================================================= */}
-        {/* VIEW EOD BUTTON */}
-        {/* ================================================= */}
-
-        <div className="mt-7 flex justify-center">
-
+        <div className="relative">
           <button
-            type="button"
-            onClick={() => navigate("/eod")}
-            className="rounded-lg bg-sky-600 px-6 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-sky-700 hover:shadow-md"
+            onClick={() => setShowProfile(!showProfile)}
+            className="flex items-center gap-3 bg-gray-50 hover:bg-gray-100 border border-gray-200 rounded-xl px-4 py-2 transition duration-200"
           >
-            View EOD
+            <UserCircle className="w-5 h-5 text-gray-500" />
+            <span className="font-medium text-sm text-gray-700">{username}</span>
+            <ChevronDown className="w-4 h-4 text-gray-400" />
           </button>
 
+          {showProfile && (
+            <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-xl shadow-xl py-2 z-50 animate-in fade-in slide-in-from-top-2 duration-200">
+              <button
+                onClick={handleLogout}
+                className="w-full px-4 py-2.5 text-left text-sm text-red-600 hover:bg-red-50 font-medium flex items-center gap-2 transition duration-150"
+              >
+                <LogOut className="w-4 h-4" />
+                Sign Out
+              </button>
+            </div>
+          )}
         </div>
+      </header>
 
-        {/* ================================================= */}
-        {/* ATTENDANCE STATUS */}
-        {/* ================================================= */}
-
-        <div className="mx-auto mt-9 w-full max-w-5xl rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5">
-
-          <div className="flex items-center justify-between gap-4">
-
-            {/* LEFT */}
-            <div className="flex min-w-0 items-center gap-3.5">
-
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-emerald-50">
-
-                <CheckCircle2
-                  size={19}
-                  className="text-emerald-600"
-                />
-
-              </div>
-
-              <div className="min-w-0">
-
-                <p className="text-sm font-semibold text-slate-800">
-                  Attendance Status
-                </p>
-
-                <p className="mt-0.5 text-sm text-slate-500">
-                  Your attendance has been recorded for today.
-                </p>
-
-              </div>
-
-            </div>
-
-            {/* STATUS */}
-            <div className="flex shrink-0 items-center gap-2 rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-semibold text-emerald-600">
-
-              <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
-
-              Present
-
-            </div>
-
+      {/* Main Container Section */}
+      <main className="flex-1 max-w-5xl w-full mx-auto p-6 md:p-8 space-y-8">
+        {/* Banner Greeting Card */}
+        <div className="bg-gradient-to-r from-blue-600 to-indigo-700 rounded-2xl p-6 md:p-8 text-white shadow-lg relative overflow-hidden">
+          <div className="relative z-10 space-y-2">
+            <span className="text-blue-100 text-xs font-semibold tracking-wider uppercase bg-white/10 px-2.5 py-1 rounded-full backdrop-blur-sm">
+              Dashboard Overview
+            </span>
+            <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight">
+              Welcome Back, {username}!
+            </h1>
+            <p className="text-blue-100 text-sm md:text-base max-w-md">
+              Manage your daily attendance log, leave records, and submit end-of-day work summaries smoothly.
+            </p>
           </div>
-
+          <div className="absolute right-0 bottom-0 opacity-10 translate-x-10 translate-y-10 pointer-events-none">
+            <ShieldCheck className="w-64 h-64" />
+          </div>
         </div>
 
-        {/* ================================================= */}
-        {/* LEAVE TAKEN */}
-        {/* ================================================= */}
+        {/* Dynamic Status Alert Message */}
+        {message && (
+          <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 text-sm text-blue-800 font-medium flex items-center gap-2 shadow-sm animate-pulse">
+            <CheckCircle2 className="w-5 h-5 text-blue-500 shrink-0" />
+            <span>{message}</span>
+          </div>
+        )}
 
-        <div className="mx-auto mt-4 w-full max-w-5xl rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5">
-
-          <div className="flex items-center justify-between gap-4">
-
-            {/* LEFT */}
-            <div className="flex min-w-0 items-center gap-3.5">
-
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-sky-50">
-
-                <CalendarDays
-                  size={19}
-                  className="text-sky-600"
-                />
-
+        {/* Dashboard Cards Grid System */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {/* Punch Time In Box */}
+          <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm flex flex-col justify-between group hover:shadow-md hover:border-blue-200 transition duration-300">
+            <div className="space-y-4">
+              <div className="w-10 h-10 rounded-xl bg-green-50 border border-green-100 flex items-center justify-center text-green-600 shadow-sm">
+                <Clock3 className="w-5 h-5" />
               </div>
-
               <div>
-
-                <p className="text-sm font-semibold text-slate-800">
-                  Leave Taken
-                </p>
-
-                <p className="mt-0.5 text-sm text-slate-500">
-                  Total leave taken so far
-                </p>
-
+                <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wider">Time In Status</h3>
+                <p className="text-3xl font-black text-gray-900 mt-1 tracking-tight">{timeIn}</p>
               </div>
-
             </div>
-
-            {/* NUMBER */}
-            <div className="shrink-0 text-right">
-
-              <p className="text-xl font-semibold text-slate-900">
-                {leaveTaken}
-              </p>
-
-              <p className="text-[10px] font-medium uppercase tracking-wide text-slate-400">
-                Days
-              </p>
-
-            </div>
-
+            <button
+              onClick={handleTimeIn}
+              disabled={timeIn !== "--:--"}
+              className={`w-full mt-6 py-3 rounded-xl font-semibold text-sm transition duration-200 shadow-sm ${
+                timeIn !== "--:--"
+                  ? "bg-gray-100 text-gray-400 border border-gray-200 cursor-not-allowed"
+                  : "bg-green-600 hover:bg-green-700 text-white active:scale-[0.98]"
+              }`}
+            >
+              {timeIn !== "--:--" ? "Checked In" : "Punch Time In"}
+            </button>
           </div>
 
+          {/* Punch Time Out Box */}
+          <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm flex flex-col justify-between group hover:shadow-md hover:border-blue-200 transition duration-300">
+            <div className="space-y-4">
+              <div className="w-10 h-10 rounded-xl bg-orange-50 border border-orange-100 flex items-center justify-center text-orange-600 shadow-sm">
+                <Clock3 className="w-5 h-5" />
+              </div>
+              <div>
+                <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wider">Time Out Status</h3>
+                <p className="text-3xl font-black text-gray-900 mt-1 tracking-tight">{timeout}</p>
+              </div>
+            </div>
+            <button
+              onClick={handleTimeOut}
+              disabled={timeIn === "--:--" || timeout !== "--:--"}
+              className={`w-full mt-6 py-3 rounded-xl font-semibold text-sm transition duration-200 shadow-sm ${
+                timeIn === "--:--" || timeout !== "--:--"
+                  ? "bg-gray-100 text-gray-400 border border-gray-200 cursor-not-allowed"
+                  : "bg-orange-600 hover:bg-orange-700 text-white active:scale-[0.98]"
+              }`}
+            >
+              {timeout !== "--:--" ? "Checked Out" : "Punch Time Out"}
+            </button>
+          </div>
+
+          {/* Leaves Tracking Box */}
+          <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm flex flex-col justify-between group hover:shadow-md hover:border-blue-200 transition duration-300">
+            <div className="space-y-4">
+              <div className="w-10 h-10 rounded-xl bg-purple-50 border border-purple-100 flex items-center justify-center text-purple-600 shadow-sm">
+                <CalendarDays className="w-5 h-5" />
+              </div>
+              <div>
+                <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wider">Leaves Summary</h3>
+                <p className="text-3xl font-black text-gray-900 mt-1 tracking-tight">{leaveTaken} Days</p>
+              </div>
+            </div>
+            <div className="mt-6 flex gap-2">
+              <button
+                onClick={() => navigate("/leave")}
+                className="flex-1 py-3 bg-purple-50 hover:bg-purple-100 border border-purple-200 text-purple-700 rounded-xl font-semibold text-sm transition duration-150 active:scale-[0.98]"
+              >
+                Apply Leave
+              </button>
+              <button
+                onClick={() => navigate("/eod")}
+                className="flex-1 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-semibold text-sm shadow-sm transition duration-150 active:scale-[0.98]"
+              >
+                View EOD
+              </button>
+            </div>
+          </div>
         </div>
-
       </main>
-
     </div>
   );
 }
